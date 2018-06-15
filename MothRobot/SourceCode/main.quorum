@@ -7,6 +7,7 @@ use Libraries.Robots.Lego.Button
 use Libraries.Robots.Lego.TouchSensor
 use Libraries.Robots.Lego.UltrasonicSensor
 use Libraries.Robots.Lego.ColorSensor
+use Libraries.Robots.Lego.Utility
 //instantiate actions
 Motor motor
 Screen screen
@@ -15,6 +16,7 @@ Button button
 TouchSensor touchSensor
 UltrasonicSensor ultrasonicSensor
 ColorSensor colorSensor
+Utility utility
 //set sensor ports 
 ultrasonicSensor:SetPort(2)
 colorSensor:SetPort(1) 
@@ -27,9 +29,8 @@ integer volume=16
 integer y =1
 //output to screen 
     screen:OutputCenterLarge("MOTH", 1)
-    screen:OutputCenter("Press Touch Switch", 4)
-    screen:OutputCenter("  To Start", 5)
-    screen:OutputCenter("  And End", 6)
+    screen:OutputCenter("Press Touch Switch", 3)
+    screen:OutputCenter("  To Start and End", 4)
 //set button fuctions
 repeat until touchSensor:IsPressed()
     sound:SetVolume(volume)     
@@ -42,6 +43,11 @@ sound:SetVolume(volume)
 sound:PlayTone(220, 1000)
 sound:PlayTone(110, 1000) //the delay is now over
 repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
+screen:OutputCenter("LightLvl "+ colorSensor:GetLightLevel(),3)
+utility:DelayMilliseconds(500)
+
+
+
 //    if ultrasonicSensor:GetDistance() < 0.5  //have the robot turn right
 //        motor:SetSpeed("B",rightspeed) 
 //        motor:SetSpeed("C",leftspeed)
