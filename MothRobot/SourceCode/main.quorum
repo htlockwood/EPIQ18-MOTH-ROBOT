@@ -1,0 +1,66 @@
+//MOTH ROBOT 2018
+// This program will have the robot move to the bightest light in it area. 
+use Libraries.Robots.Lego.Motor
+use Libraries.Robots.Lego.Screen
+use Libraries.Robots.Lego.Sound
+use Libraries.Robots.Lego.Button
+use Libraries.Robots.Lego.TouchSensor
+use Libraries.Robots.Lego.UltrasonicSensor
+use Libraries.Robots.Lego.ColorSensor
+//instantiate actions
+Motor motor
+Screen screen
+Sound sound
+Button button
+TouchSensor touchSensor
+UltrasonicSensor ultrasonicSensor
+ColorSensor colorSensor
+//set sensor ports 
+ultrasonicSensor:SetPort(2)
+colorSensor:SetPort(1) 
+touchSensor:SetPort(4)
+// A few variables
+integer speed=64
+integer leftspeed=speed
+integer rightspeed=speed
+integer volume=16
+integer y =1
+//output to screen 
+    screen:OutputCenterLarge("MOTH", 1)
+    screen:OutputCenter("Press Touch Switch", 4)
+    screen:OutputCenter("  To Start", 5)
+    screen:OutputCenter("  And End", 6)
+//set button fuctions
+repeat until touchSensor:IsPressed()
+    sound:SetVolume(volume)     
+    sound:PlayTone(330, 125)
+    sound:PlayTone(410, 125) 
+    button:SetLightPattern(7)
+end //end of button fuctions repeat loop
+screen:Clear()//delay after user presses center to let go of robot (3 seconds)
+sound:SetVolume(volume) 
+sound:PlayTone(220, 1000)
+sound:PlayTone(110, 1000) //the delay is now over
+repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
+//    if ultrasonicSensor:GetDistance() < 0.5  //have the robot turn right
+//        motor:SetSpeed("B",rightspeed) 
+//        motor:SetSpeed("C",leftspeed)
+//        motor:RotateForward("B")
+//        motor:RotateBackward("C") //This makes the robot spin in at current location
+//        sound:PlayTone(440,5)
+//    else //Normal Robot movement, Roll straight head
+//        motor:SetSpeed("B",rightspeed)
+//        motor:SetSpeed("C",leftspeed)
+//        motor:RotateForward("B")
+//        motor:RotateForward("C")
+//        sound:PlayTone(880,2)
+    end  
+//End of repeat until touchSensor2:IsPressed() Upward Sensor
+motor:Stop("B")
+motor:Stop("C")
+sound:PlayTone(440, 2000)
+//The End
+//hello
+//gitfun
+//evenmore git fun
+
