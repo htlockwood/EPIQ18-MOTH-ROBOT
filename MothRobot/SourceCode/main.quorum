@@ -30,6 +30,9 @@ integer rightspeed=speed
 integer volume=8
 integer y =1
 integer lightcolor=1
+number firstLightLevel=0.0
+number secondLightLevel=0.0
+integer turnsize=2
 //output to screen 
     screen:OutputCenterLarge("MOTH PC", 1)
     screen:OutputCenter("Press Touch Switch", 3)
@@ -53,22 +56,44 @@ sound:PlayTone(110, 1000) //the delay is now over
 repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
 screen:OutputCenter("LightLvl "+ colorSensor:GetLightLevel(),3)
 //utility:DelayMilliseconds(500)
+repeat until  colorSensor:GetLightLevel()>0.6  //have the robot turn spin
+   //SEARCH FOR LIGHT
+    firstLightLevel=colorSensor:GetLightLevel()
+    utility:DelayMilliseconds(1000)
+    sound:PlayTone(220,10)
+    secondLightLevel=colorSensor:GetLightLevel()
+    if secondLightLevel>firstLightLevel
+        motor:SetSpeed("B",rightspeed) 
+        motor:SetSpeed("C",rightspeed)
+        motor:RotateForward("B")
+        motor:RotateForward("C")
 
-    if colorSensor:GetLightLevel()>0.3  //have the robot turn spin
+    else
+        motor:SetSpeed("B",rightspeed) 
+        motor:SetSpeed("C",turnsize)
+        motor:RotateForward("B")
+        motor:RotateForward("C")
+        turnsize=turnsize+2
+            if turnsize > 100
+            turnsize = 8
+            end
+
+end
+
+  
+   // end  
+end
+        repeat 10 times
         motor:SetSpeed("B",rightspeed) 
         motor:SetSpeed("C",rightspeed)
         motor:RotateForward("B")
         motor:RotateBackward("C") //This makes the robot spin in at current location
-        sound:PlayTone(220,10)
-   else //Normal Robot movement, Roll sprial 
-       motor:SetSpeed("B",rightspeed/4)
-       motor:SetSpeed("C",leftspeed/2)
-       motor:RotateForward("B")
-       motor:RotateForward("C")
-       sound:PlayTone(880,50)
-    end  
-end//End of repeat until touchSensor2:IsPressed() Upward Sensor
+        sound:PlayTone(440,50)
+        sound:PlayTone(880,25)
+        end
 
+
+end //End of repeat until touchSensor2:IsPressed() Upward Sensor
 motor:Stop("B")
 motor:Stop("C")
 sound:PlayTone(440, 2000)
