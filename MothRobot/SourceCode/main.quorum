@@ -49,18 +49,19 @@ screen:OutputCenter("LightLvl "+ colorSensor:GetLightLevel(),5)
        lightcolor=1
     end
 end //end of button fuctions repeat loop
+
 screen:Clear()//delay after user presses center to let go of robot (3 seconds)
 sound:SetVolume(volume) 
 sound:PlayTone(220, 1000)
 sound:PlayTone(110, 1000) //the delay is now over
-repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
+//repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
 screen:OutputCenter("LightLvl "+ colorSensor:GetLightLevel(),3)
 //utility:DelayMilliseconds(500)
-repeat until  colorSensor:GetLightLevel()>0.6  //have the robot turn spin
+repeat until  colorSensor:GetLightLevel()>0.4  //have the robot turn spin
    //SEARCH FOR LIGHT
     firstLightLevel=colorSensor:GetLightLevel()
-    utility:DelayMilliseconds(1000)
-    sound:PlayTone(220,10)
+    utility:DelayMilliseconds(500)
+    sound:PlayTone(220,500)
     secondLightLevel=colorSensor:GetLightLevel()
     if secondLightLevel>firstLightLevel
         motor:SetSpeed("B",rightspeed) 
@@ -73,30 +74,28 @@ repeat until  colorSensor:GetLightLevel()>0.6  //have the robot turn spin
         motor:SetSpeed("C",turnsize)
         motor:RotateForward("B")
         motor:RotateForward("C")
-        turnsize=turnsize+2
-            if turnsize > 100
-            turnsize = 8
+        turnsize=turnsize+1
+            if turnsize > 50
+            turnsize = -6
             end
 
-end
+    end
 
-  
-   // end  
 end
-        repeat 10 times
+        repeat 5 times
         motor:SetSpeed("B",rightspeed) 
         motor:SetSpeed("C",rightspeed)
         motor:RotateForward("B")
         motor:RotateBackward("C") //This makes the robot spin in at current location
-        sound:PlayTone(440,50)
-        sound:PlayTone(880,25)
+        sound:PlayTone(440,500)
+        sound:PlayTone(880,500)
         end
 
 
-end //End of repeat until touchSensor2:IsPressed() Upward Sensor
+//end //End of repeat until touchSensor2:IsPressed() Upward Sensor
 motor:Stop("B")
 motor:Stop("C")
-sound:PlayTone(440, 2000)
+sound:PlayTone(1200, 2000)
 //Basically Works
 
 
