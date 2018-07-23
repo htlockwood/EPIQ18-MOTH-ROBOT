@@ -32,7 +32,6 @@ integer volume=8
 integer lightcolor=1
 number firstLightLevel=0.0
 number secondLightLevel=0.0
-integer turnsize=3
 //output to screen 
     screen:OutputCenterLarge("MOTH PC", 1)
     screen:OutputCenter("Press Touch Switch", 3)
@@ -97,4 +96,4 @@ end
 motor:Stop("B")
 motor:Stop("C")
 sound:PlayTone(1200, 2000)
-//Basically Works
+//now Works
