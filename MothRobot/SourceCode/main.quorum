@@ -8,9 +8,8 @@ use Libraries.Robots.Lego.TouchSensor
 use Libraries.Robots.Lego.UltrasonicSensor
 use Libraries.Robots.Lego.ColorSensor
 use Libraries.Robots.Lego.Utility
-//use Libraries.Compute.Random
+
 //instantiate actions
-//Random random
 Motor motor
 Screen screen
 Sound sound
@@ -19,20 +18,21 @@ TouchSensor touchSensor
 UltrasonicSensor ultrasonicSensor
 ColorSensor colorSensor
 Utility utility
+
 //set sensor ports 
 ultrasonicSensor:SetPort(2)
 colorSensor:SetPort(1) 
 touchSensor:SetPort(4)
+
 // A few variables
 integer speed=64
 integer leftspeed=speed
 integer rightspeed=speed
 integer volume=8
-integer y =1
 integer lightcolor=1
 number firstLightLevel=0.0
 number secondLightLevel=0.0
-integer turnsize=2
+integer turnsize=3
 //output to screen 
     screen:OutputCenterLarge("MOTH PC", 1)
     screen:OutputCenter("Press Touch Switch", 3)
@@ -45,42 +45,45 @@ screen:OutputCenter("LightLvl "+ colorSensor:GetLightLevel(),5)
     sound:PlayTone(410, 125) 
     button:SetLightPattern(lightcolor)
     lightcolor=lightcolor+1
-    if lightcolor=10
-       lightcolor=1
-    end
+        if lightcolor=10
+           lightcolor=1
+        end
 end //end of button fuctions repeat loop
 
-screen:Clear()//delay after user presses center to let go of robot (3 seconds)
+screen:Clear()//delay after user presses center to let go of robot (2 seconds)
 sound:SetVolume(volume) 
 sound:PlayTone(220, 1000)
 sound:PlayTone(110, 1000) //the delay is now over
-//repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
 screen:OutputCenter("LightLvl "+ colorSensor:GetLightLevel(),3)
-//utility:DelayMilliseconds(500)
-repeat until  colorSensor:GetLightLevel()>0.4  //have the robot turn spin
-   //SEARCH FOR LIGHT
+
+repeat until  colorSensor:GetLightLevel()>0.3  //have the robot turn spin
+
     firstLightLevel=colorSensor:GetLightLevel()
-    utility:DelayMilliseconds(500)
-    sound:PlayTone(220,500)
+    utility:DelayMilliseconds(33)
     secondLightLevel=colorSensor:GetLightLevel()
-    if secondLightLevel>firstLightLevel
+    
+    if secondLightLevel<firstLightLevel
+        button:SetLightPattern(1)
         motor:SetSpeed("B",rightspeed) 
-        motor:SetSpeed("C",rightspeed)
+        motor:SetSpeed("C",rightspeed/2)
+        motor:RotateForward("B")// moves in curve
+        motor:RotateForward("C")
+   
+    else if secondLightLevel>firstLightLevel
+        button:SetLightPattern(2)
+        motor:SetSpeed("B",rightspeed/2) 
+        motor:SetSpeed("C",rightspeed) //Moves in  a curve
         motor:RotateForward("B")
         motor:RotateForward("C")
 
     else
+        button:SetLightPattern(3)
         motor:SetSpeed("B",rightspeed) 
-        motor:SetSpeed("C",turnsize)
+        motor:SetSpeed("C",rightspeed) //spin
         motor:RotateForward("B")
-        motor:RotateForward("C")
-        turnsize=turnsize+1
-            if turnsize > 50
-            turnsize = -6
-            end
-
+        motor:RotateBackward("C")
     end
-
+    end
 end
         repeat 5 times
         motor:SetSpeed("B",rightspeed) 
@@ -91,11 +94,7 @@ end
         sound:PlayTone(880,500)
         end
 
-
-//end //End of repeat until touchSensor2:IsPressed() Upward Sensor
 motor:Stop("B")
 motor:Stop("C")
 sound:PlayTone(1200, 2000)
 //Basically Works
-
-
